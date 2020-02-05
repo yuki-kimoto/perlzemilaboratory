@@ -1,0 +1,60 @@
+<h2>SPVMのn次元配列のデータ構造を実装するためにNumPyのデータ構造を調べる</h2>
+
+SPVMのn次元配列のデータ構造を実装するためにNumPyのndarrayのデータ構造を調べる。
+
+<a href="https://codezine.jp/article/detail/11211">NumPyで使われる多次元配列のデータ構造「ndarray」とは？</a>
+
+<pre>
+属性	説明
+T	いわゆる転置を返す。ndim<2の時は元の配列が返される
+data	配列のデータがどこから始まっているのかを示すPythonのバッファオブジェクト
+dtype	ndarrayに含まれる要素が持つデータ型
+flags	メモリ上におけるndarrayのデータの格納の仕方（Memory Layout）についての情報
+flat	ndarrayを1次元配列に変換するイテレータ
+imag	ndarrayにおける虚数部分（imaginary part）
+real	ndarrayにおける実数部分（real part）
+size	ndarrayに含まれる要素の数
+itemsize	バイト単位での1つ1つの要素のメモリ消費量
+nbytes	ndarrayの要素によって占められるバイト単位におけるメモリ消費量
+ndim	ndarrayに含まれる次元の数
+shape	ndarrayの形状（shape）をタプルで表したもの
+strides	各次元方向に1つ隣の要素に移動するために必要なバイト数をタプルで表示し たもの
+ctypes	ctypesモジュールで扱うためのイテレータ
+base	ndarrayのベースとなるオブジェクト（どのメモリを参照しているのか）
+</pre>
+
+この中には、キャッシュされていそうなものもあって、どれが、最低限必要か。
+
+T 転置は必要。
+
+data は、baseから見たオフセットで管理できそう。
+
+dtypeは、SPVMは静的型なのでいらなさそう。
+
+flagsは、補助的な情報かな。
+
+flatは、直接配列を参照できれば、よさそう。
+
+realとimagは、SPVMには、複素数配列型が存在するので、こちらで実装できそう。
+
+itemsizeは、SPVMは静的型だから関係なさそう。
+
+nbytesは、計算できそう。
+
+ndimは、shapeの要素数から取得できそう。
+
+shapeは必要。
+
+stridesが環境によって違うのは、ポインタを使っているからなのかな? あるいはデータ型によって幅が異なるのか? SPVMは、静的型だから関係なさそう。
+
+ctypesというのは、SPVMでは関係がなさそう。SPVMは静的型なので。
+
+baseというのは、C言語の配列の先頭を指していそう。
+
+これに加えて、
+
+numpyは、整数型の非値を表現できないということが分かったので、これを解決できるデータを持ちたい。
+
+これを元にSPVM::NDArray::Int,SPVM::NDArray::Long, SPVM::NDArray::Float, SPVM::NDARRAY::Doubleなどを作る。
+
+floatがあるとGPUと相性がよさそうね。
