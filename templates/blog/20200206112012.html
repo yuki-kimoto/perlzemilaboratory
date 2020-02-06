@@ -1,0 +1,82 @@
+<h2>NumPyのndarrayに互換性の高いSPVMのデータ構造をさっそく作成した</h2>
+
+NumPyのndarrayに互換性の高い<a href="https://github.com/yuki-kimoto/SPVM">SPVM</a>のデータ構造をさっそく作成した。8bit,16bit,32bit,64bit符号付整数型、32bit, 64bit浮動小数点型、文字列型、32bit,64bit浮動小数点複素数型。加えて、非値の情報を持てるようにした。
+
+データ操作のアルゴリズムは、SPVMコアでは提供しない。
+
+数値計算においては、アルゴリズムやハードウェアこそが、本質になってくると思うから。CPUかGPUかOpenMPかSIMDで数値計算するかは、この上にフレームワークを作る実装者が選べたほうがよいはず。
+
+<pre>
+package SPVM::NDArray::Byte : public {
+  has base : public byte[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::ComplexDouble : public {
+  has base : public SPVM::Complex_2d[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::ComplexFloat : public {
+  has base : public SPVM::Complex_2f[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::Double : public {
+  has base : public double[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::Float public {
+  has base : public float[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::Int : public {
+  has base : public int[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::Long : public {
+  has base : public long[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::Short : public {
+  has base : public short[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+package SPVM::NDArray::String : public {
+  has base : public string[];
+  has offset : public int;
+  has length : public int;
+  has trans : public byte;
+  has shape : public int[];
+  has na_flags : public byte[];
+}
+</pre>
