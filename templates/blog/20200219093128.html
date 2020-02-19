@@ -1,0 +1,27 @@
+<h2>四元数で3次元回転できるためのデータ構造をSPVMに追加する</h2>
+
+四元数で3次元回転できるためのデータ構造をSPVMに追加しています。
+
+<a href="http://www015.upp.so-net.ne.jp/notgeld/quaternion.html">四元数で3次元回転</a>
+
+まず四元数を表現できること。
+
+<pre>
+package SPVM::Quaternion_4i : mulnum_t {
+  has t : int;
+  has x : int;
+  has y : int;
+  has z : int;
+}
+</pre>
+
+次に四元数を連続したデータ領域の配列に配置できること。
+
+<pre>
+my $quaternions = new SPVM::Quaternion_4i[10000];
+</pre>
+
+SPVMは、C言語と同じく、この両方を満たすことができます。参照の並びではなく、ぴったりと数値が連続したデータ構造です。
+
+回転させるための四元数をfor文で、連続して適用していくことができます。
+
